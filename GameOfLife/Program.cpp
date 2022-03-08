@@ -4,9 +4,8 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
 	Games theGame;
-		if (theGame.Init("Game Of Life", 265, 265))
+		if (theGame.Init("Game Of Life", 800, 600))
 		{
-			
 			theGame.start();
 			return 0;
 		}

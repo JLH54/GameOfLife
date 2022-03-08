@@ -44,13 +44,6 @@ void Games::Close()
 	SDL_Quit();
 }
 
-void Games::Load()
-{
-	m_cellWidth = 50;
-	m_cellHeight = 50;
-	CreateGrid(5, 5);
-}
-
 void Games::ProcessInput()
 {
 	SDL_Event events;
@@ -113,55 +106,23 @@ void Games::UpdateLogic()
 	{
 		if (!m_IsClicked)
 		{
-			SDL_Log("Click gauche");
+			grid.GridUpdate(m_MouseX, m_MouseY);
 			m_IsClicked = true;
 		}
-		else
-		{
-			m_IsClicked = false;
-		}
-		
+	}
+	else
+	{
+		m_IsClicked = false;
 	}
 }
 
 void Games::RenderFrame()
 {
 	//Draw
-	DrawGrid();
-
+	grid.DrawGrid(m_Graphics, m_MouseX, m_MouseY);
 	SDL_SetRenderDrawColor(m_Graphics, 0, 255, 0, 255);
 	SDL_Rect rect = { m_MouseX, m_MouseY, 10, 10 };
 	SDL_RenderFillRect(m_Graphics, &rect);
-}
-
-void Games::CreateGrid(int w, int h)
-{
-	m_gridWidth = w;
-	m_gridHeight = h;
-	m_Grid.resize(w * h);
-
-}
-
-void Games::DrawGrid()
-{
-	int offset = 3;
-	int offsetx = 2;
-	SDL_SetRenderDrawColor(m_Graphics, 255, 255, 255, 255);
-	for (size_t i = 0; i < m_Grid.size(); i++)
-	{
-		int x = (i % m_gridWidth)* (50 + offset) + offsetx;
-		int y = (i / m_gridWidth) * (50 + offset);
-		SDL_Rect rect = { x, y, m_cellWidth, m_cellHeight };
-		if (m_Grid[i] == 0)
-		{
-			SDL_RenderDrawRect(m_Graphics, &rect);
-		}
-		else
-		{
-			SDL_RenderFillRect(m_Graphics, &rect);
-		}
-		
-	}
 }
 
 bool Games::Init(const std::string& title, int width, int height)
@@ -185,7 +146,7 @@ bool Games::Init(const std::string& title, int width, int height)
 
 void Games::start()
 {
-	Load();
+	grid.InitGrid(50, 50);
 	const unsigned int FPS = 60;
 	const unsigned int FRAME_TARGET_TIME = 1000 / FPS;
 
@@ -199,6 +160,7 @@ void Games::start()
 		SDL_SetRenderDrawColor(m_Graphics, 145, 145, 145, 255);
 		SDL_RenderClear(m_Graphics);
 
+
 		RenderFrame();
 		SDL_RenderPresent(m_Graphics);
 		int restTime = start + FRAME_TARGET_TIME - clock();
@@ -207,6 +169,5 @@ void Games::start()
 			Sleep(restTime);
 		}
 	}
-
 	Close();
 }

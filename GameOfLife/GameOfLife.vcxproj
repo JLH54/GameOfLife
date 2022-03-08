@@ -152,10 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Games.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Program.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Games.h" />
+    <ClInclude Include="Grid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
